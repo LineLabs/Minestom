@@ -1,6 +1,7 @@
 package net.minestom.server;
 
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.linelabs.extensions.ExtensionManager;
 import net.minestom.server.advancements.AdvancementManager;
 import net.minestom.server.adventure.bossbar.BossBarManager;
 import net.minestom.server.command.CommandManager;
@@ -38,6 +39,7 @@ import net.minestom.server.world.DimensionType;
 import net.minestom.server.world.biome.Biome;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.io.IOException;
@@ -248,6 +250,10 @@ public final class MinecraftServer implements MinecraftConstants {
 
     public static AdvancementManager getAdvancementManager() {
         return serverProcess.advancement();
+    }
+
+    public static @Nullable ExtensionManager getExtensionManager() {
+        return serverProcess.extension();
     }
 
     public static TagManager getTagManager() {

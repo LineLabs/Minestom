@@ -1,6 +1,7 @@
 package net.minestom.server;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.linelabs.extensions.ExtensionManager;
 import net.minestom.server.advancements.AdvancementManager;
 import net.minestom.server.adventure.bossbar.BossBarManager;
 import net.minestom.server.command.CommandManager;
@@ -43,6 +44,7 @@ import net.minestom.server.utils.nbt.BinaryTagSerializer;
 import net.minestom.server.world.DimensionType;
 import net.minestom.server.world.biome.Biome;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +59,7 @@ final class ServerProcessImpl implements ServerProcess {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerProcessImpl.class);
 
     private final ExceptionManager exception;
+    private final ExtensionManager extension;
 
     private final DynamicRegistry<BinaryTagSerializer<? extends LevelBasedValue>> enchantmentLevelBasedValues;
     private final DynamicRegistry<BinaryTagSerializer<? extends ValueEffect>> enchantmentValueEffects;
@@ -100,6 +103,7 @@ final class ServerProcessImpl implements ServerProcess {
 
     public ServerProcessImpl() throws IOException {
         this.exception = new ExceptionManager();
+        this.extension = ServerFlag.EXTENSIONS_ENABLED ? new ExtensionManager(this) : null;
 
         // The order of initialization here is relevant, we must load the enchantment util registries before the vanilla data is loaded.
 
@@ -262,6 +266,11 @@ final class ServerProcessImpl implements ServerProcess {
     }
 
     @Override
+    public @Nullable ExtensionManager extension() {
+        return extension;
+    }
+
+    @Override
     public @NotNull TagManager tag() {
         return tag;
     }
@@ -312,7 +321,16 @@ final class ServerProcessImpl implements ServerProcess {
             throw new IllegalStateException("Server already started");
         }
 
+        if (ServerFlag.EXTENSIONS_ENABLED) {
+            extension.start();
+            extension.gotoPreInit();
+        }
+
         LOGGER.info("Starting " + MinecraftServer.getBrandName() + " server.");
+
+        if (ServerFlag.EXTENSIONS_ENABLED) {
+            extension.gotoInit();
+        }
 
         // Init server
         try {
@@ -325,6 +343,10 @@ final class ServerProcessImpl implements ServerProcess {
         // Start server
         server.start();
 
+        if (ServerFlag.EXTENSIONS_ENABLED) {
+            extension.gotoPostInit();
+        }
+
         LOGGER.info(MinecraftServer.getBrandName() + " server started successfully.");
 
         // Stop the server on SIGINT
@@ -336,6 +358,10 @@ final class ServerProcessImpl implements ServerProcess {
         if (!stopped.compareAndSet(false, true))
             return;
         LOGGER.info("Stopping " + MinecraftServer.getBrandName() + " server.");
+        if (ServerFlag.EXTENSIONS_ENABLED) {
+            LOGGER.info("Unloading all extensions.");
+            extension.shutdown();
+        }
         scheduler.shutdown();
         connection.shutdown();
         server.stop();

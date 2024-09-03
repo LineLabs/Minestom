@@ -24,6 +24,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven(url = "https://jitpack.io")
     }
 
     configurations.all {
@@ -70,6 +71,7 @@ dependencies {
     api(libs.jetbrainsAnnotations)
     api(libs.bundles.adventure)
     implementation(libs.minestomData)
+    implementation("com.github.Minestom:DependencyGetter:v1.0.1")
 
     // Performance/data structures
     implementation(libs.caffeine)

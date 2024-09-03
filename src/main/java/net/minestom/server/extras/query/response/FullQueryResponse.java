@@ -1,6 +1,7 @@
 package net.minestom.server.extras.query.response;
 
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.linelabs.extensions.Extension;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.extras.query.Query;
 import net.minestom.server.utils.binary.BinaryWriter;
@@ -121,6 +122,17 @@ public class FullQueryResponse implements Writeable {
         StringBuilder builder = new StringBuilder(MinecraftServer.getBrandName())
                 .append(' ')
                 .append(MinecraftServer.VERSION_NAME);
+
+        if (!MinecraftServer.getExtensionManager().getExtensions().isEmpty()) {
+            for (Extension extension : MinecraftServer.getExtensionManager().getExtensions()) {
+                builder.append(extension.getOrigin().getName())
+                        .append(' ')
+                        .append(extension.getOrigin().getVersion())
+                        .append("; ");
+            }
+
+            builder.delete(builder.length() - 2, builder.length());
+        }
 
         return builder.toString();
     }

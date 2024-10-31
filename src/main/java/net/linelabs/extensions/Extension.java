@@ -11,12 +11,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Extension {
+
     /**
      * List of extensions that depend on this extension.
      */
@@ -53,8 +53,7 @@ public abstract class Extension {
         throw new IllegalStateException("Extension class loader is not an ExtensionClassLoader");
     }
 
-    @NotNull
-    public DiscoveredExtension getOrigin() {
+    public @NotNull DiscoveredExtension getOrigin() {
         return getExtensionClassLoader().getDiscoveredExtension();
     }
 
@@ -63,8 +62,7 @@ public abstract class Extension {
      *
      * @return The logger for the extension
      */
-    @NotNull
-    public ComponentLogger getLogger() {
+    public @NotNull ComponentLogger getLogger() {
         return getExtensionClassLoader().getLogger();
     }
 
@@ -88,7 +86,7 @@ public abstract class Extension {
      * @return The file contents, or null if there was an issue reading the file.
      */
     public @Nullable InputStream getResource(@NotNull String fileName) {
-        return getResource(Paths.get(fileName));
+        return getResource(Path.of(fileName));
     }
 
     /**
@@ -159,7 +157,7 @@ public abstract class Extension {
      * @return True if the resource was saved successfully, null otherwise
      */
     public boolean savePackagedResource(@NotNull String fileName) {
-        return savePackagedResource(Paths.get(fileName));
+        return savePackagedResource(Path.of(fileName));
     }
 
     /**

@@ -154,7 +154,7 @@ public abstract class Extension {
      * Copies a resource file to the extension directory, replacing any existing copy.
      *
      * @param fileName The resource to save
-     * @return True if the resource was saved successfully, null otherwise
+     * @return True if the resource was saved successfully, {@code null} otherwise
      */
     public boolean savePackagedResource(@NotNull String fileName) {
         return savePackagedResource(Path.of(fileName));
@@ -164,7 +164,7 @@ public abstract class Extension {
      * Copies a resource file to the extension directory, replacing any existing copy.
      *
      * @param target The resource to save
-     * @return True if the resource was saved successfully, null otherwise
+     * @return True if the resource was saved successfully, {@code null} otherwise
      */
     public boolean savePackagedResource(@NotNull Path target) {
         final Path targetFile = getDataDirectory().resolve(target);

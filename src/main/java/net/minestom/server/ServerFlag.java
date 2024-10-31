@@ -54,8 +54,7 @@ public final class ServerFlag {
     // World
     public static final int WORLD_BORDER_SIZE = intProperty("minestom.world-border-size", 29999984);
 
-    // Extensions todo use enabled flag
-    public static final boolean EXTENSIONS_ENABLED = booleanProperty("minestom.extension.enabled", false);
+    public static final boolean EXTENSIONS_ENABLED = booleanProperty("minestom.extension.enabled", true);
     public static final @NotNull String EXTENSIONS_FOLDER = System.getProperty("minestom.extension.folder", "extensions");
     public static final @Nullable String EXTENSIONS_DEV_CLASSES = System.getProperty("minestom.extension.indevfolder.classes");
     public static final @Nullable String EXTENSIONS_DEV_RESOURCES = System.getProperty("minestom.extension.indevfolder.resources");

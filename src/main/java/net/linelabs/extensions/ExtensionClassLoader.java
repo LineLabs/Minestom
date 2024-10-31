@@ -41,24 +41,28 @@ public final class ExtensionClassLoader extends URLClassLoader {
     protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         try {
             return super.loadClass(name, resolve);
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException ex) {
             for (ExtensionClassLoader child : children) {
                 try {
                     return child.loadClass(name, resolve);
-                } catch (ClassNotFoundException ignored) {}
+                } catch (ClassNotFoundException ignored) {
+                }
             }
-            throw e;
+            throw ex;
         }
     }
 
     public InputStream getResourceAsStreamWithChildren(@NotNull String name) {
         InputStream in = getResourceAsStream(name);
-        if (in != null) return in;
+        if (in != null) {
+            return in;
+        }
 
         for (ExtensionClassLoader child : children) {
             InputStream childInput = child.getResourceAsStreamWithChildren(name);
-            if (childInput != null)
+            if (childInput != null) {
                 return childInput;
+            }
         }
 
         return null;

@@ -22,7 +22,7 @@ public final class DiscoveredExtension {
     /**
      * Static logger for this class.
      */
-    public static final Logger LOGGER = LoggerFactory.getLogger(DiscoveredExtension.class);
+    public static final Logger log = LoggerFactory.getLogger(DiscoveredExtension.class);
 
     /**
      * The regex that this name must pass. If it doesn't, it will not be accepted.
@@ -81,14 +81,14 @@ public final class DiscoveredExtension {
     /**
      * The original jar this is from.
      */
-    transient private File originalJar;
+    private transient File originalJar;
 
-    transient private Path dataDirectory;
+    private transient Path dataDirectory;
 
     /**
      * The class loader that powers it.
      */
-    transient private ExtensionClassLoader classLoader;
+    private transient ExtensionClassLoader classLoader;
 
     @NotNull
     public String getName() {
@@ -159,8 +159,8 @@ public final class DiscoveredExtension {
             for (URL f : extension.files) {
                 fileList.append(f.toExternalForm()).append(", ");
             }
-            LOGGER.error("Extension with no name. (at {}})", fileList);
-            LOGGER.error("Extension at ({}) will not be loaded.", fileList);
+            log.error("Extension with no name. (at {}})", fileList);
+            log.error("Extension at ({}) will not be loaded.", fileList);
             extension.loadStatus = DiscoveredExtension.LoadStatus.INVALID_NAME;
 
             // To ensure @NotNull: name = INVALID_NAME
@@ -169,8 +169,8 @@ public final class DiscoveredExtension {
         }
 
         if (!extension.name.matches(NAME_REGEX)) {
-            LOGGER.error("Extension '{}' specified an invalid name.", extension.name);
-            LOGGER.error("Extension '{}' will not be loaded.", extension.name);
+            log.error("Extension '{}' specified an invalid name.", extension.name);
+            log.error("Extension '{}' will not be loaded.", extension.name);
             extension.loadStatus = DiscoveredExtension.LoadStatus.INVALID_NAME;
 
             // To ensure @NotNull: name = INVALID_NAME
@@ -179,8 +179,8 @@ public final class DiscoveredExtension {
         }
 
         if (extension.entrypoint == null) {
-            LOGGER.error("Extension '{}' did not specify an entry point (via 'entrypoint').", extension.name);
-            LOGGER.error("Extension '{}' will not be loaded.", extension.name);
+            log.error("Extension '{}' did not specify an entry point (via 'entrypoint').", extension.name);
+            log.error("Extension '{}' will not be loaded.", extension.name);
             extension.loadStatus = DiscoveredExtension.LoadStatus.NO_ENTRYPOINT;
 
             // To ensure @NotNull: entrypoint = NO_ENTRYPOINT
@@ -191,8 +191,8 @@ public final class DiscoveredExtension {
         // Handle defaults
         // If we reach this code, then the extension will most likely be loaded:
         if (extension.version == null) {
-            LOGGER.warn("Extension '{}' did not specify a version.", extension.name);
-            LOGGER.warn("Extension '{}' will continue to load but should specify a plugin version.", extension.name);
+            log.warn("Extension '{}' did not specify a version.", extension.name);
+            log.warn("Extension '{}' will continue to load but should specify a plugin version.", extension.name);
             extension.version = "Unspecified";
         }
 

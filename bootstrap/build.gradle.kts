@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     implementation(rootProject)
+    implementation("dev.nipafx.args:record-args:0.9.2")
 
     runtimeOnly(libs.bundles.logback)
 }

@@ -653,7 +653,7 @@ public class ExtensionManager {
         }
     }
 
-    private void unloadExtension(@NotNull String extensionName) {
+    public void unloadExtension(@NotNull String extensionName) {
         Extension extension = extensions.get(extensionName.toLowerCase());
 
         if (extension == null) {

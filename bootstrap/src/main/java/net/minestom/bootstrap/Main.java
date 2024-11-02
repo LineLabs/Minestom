@@ -13,10 +13,26 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * Main class for bootstrapping the Minestom server.
+ */
 public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
+    /**
+     * Default constructor for the Main class.
+     */
+    public Main() {
+        // Default constructor
+    }
+
+    /**
+     * Main method to start the Minestom server.
+     *
+     * @param args Command-line arguments
+     * @throws ArgsParseException if there is an error parsing the arguments
+     */
     public static void main(String[] args) throws ArgsParseException {
         log.debug("Creating Minestom Server with Args: {}", Arrays.toString(args));
         ServerArgs serverArgs = Args.parse(args, ServerArgs.class);

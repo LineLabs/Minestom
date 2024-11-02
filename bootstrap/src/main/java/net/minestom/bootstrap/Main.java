@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * Main class for bootstrapping the Minestom server.
  */
-public class Main {
+public final class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
